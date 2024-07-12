@@ -46,10 +46,12 @@ int main() {
                 }
             }
             
-            for ( int w = 0, temp; w < N; w++ ) {
-                temp = matrix[q][w];
-                matrix[q][w] = matrix[s][w];
-                matrix[s][w] = -1 * temp;
+            if ( s != q ) {
+                for ( int w = 0, temp; w < N; w++ ) {
+                    temp = matrix[q][w];
+                    matrix[q][w] = matrix[s][w];
+                    matrix[s][w] = -1 * temp;
+                }
             }
         }
         for ( int i = q; i < N-1; i++ ) {
