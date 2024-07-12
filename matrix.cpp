@@ -36,57 +36,29 @@ int main() {
         std::cout << '\n';
     }
     
-    int transposeFlag = 0;
-    for ( int i = 0; i < N; i++ ) {
-        transposeFlag += matrix[i][0];
-    }
-    
-    if ( !transposeFlag ) {
-        for ( int i = 0; i < N; i++ ) {
-            for ( int j = i, temp; j < N; j++ ) {
-                temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
+    for ( int q = 0, p = 0; q < N-1; q++ ) {
+        if ( matrix[q][q+p] == 0 ) {
+            int s = q+1;
+            for ( ; matrix[s][q+p] == 0; s++ ) {
+                if ( s == N-1 && matrix[s][q+p] == 0 ) {
+                    p++;
+                    s = q;
+                }
+            }
+            
+            for ( int w = 0, temp; w < N; w++ ) {
+                temp = matrix[q][w];
+                matrix[q][w] = matrix[s][w];
+                matrix[s][w] = -1 * temp;
+            }
+        }
+        for ( int i = q; i < N-1; i++ ) {
+            for ( int j = N-1; j >= q+p; j-- ) {
+                matrix[i+1][j] = matrix[i+1][j] - matrix[q][j] * (matrix[i+1][q+p]/matrix[q][q+p]);
             }
         }
     }
-    
-    int endFlag = 1;
-    for ( int k = 0; k < N-1; k++ ) {
-        for ( int i = k; i < N-1; i++ ) {
-            for ( int j = N-1; j >= k; j-- ) {
-                
-                    // for ( int x = 0; x < N; x++ ) {
-                    //     for ( int y = 0; y < N; y++ ) {
-                    //         std::cout << matrix[x][y] << '\t';
-                    //     }
-                    //     std::cout << '\n';
-                    // }
-                    // std::cout << '\n';
-                    
-                if ( matrix[k][k] == 0 ) {
-                    int u = k+1;
-                    for ( ; matrix[u][k] == 0; u++ ) {
-                        if ( u == N-1 && matrix[u][k] == 0) {
-                            endFlag = 0;
-                            break;
-                        }
-                    }
-                    
-                    for ( int v = k, temp; v < N; v++ ) {
-                        temp = matrix[k][v];
-                        matrix[k][v] = matrix[u][v];
-                        matrix[u][v] = -1 * temp;
-                    }
-                }
-                
-                if ( endFlag ) {
-                    matrix[i+1][j] = matrix[i+1][j] - matrix[k][j] * (matrix[i+1][k]/matrix[k][k]);
-                }
-            }
-        }
-    }
-    
+        
     std::cout << '\n';
     for ( int i = 0; i < N; i++ ) {
         for ( int j = 0; j < N; j++ ) {
